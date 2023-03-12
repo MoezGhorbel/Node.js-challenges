@@ -14,9 +14,9 @@ let storage = multer.diskStorage({
   },
 });
 
-function fileFilter(req,file,cb) {
+function fileFilter(req, file, cb) {
   const fileextension = path.extname(file.originalname);
-  const acceptedExtension = [".png",".jpg",".jpeg"];
+  const acceptedExtension = [".png", ".jpg", ".jpeg"];
   cb(null, acceptedExtension.includes(fileextension));
 };
 
@@ -25,7 +25,7 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-router.post("/", upload.single("file"),controller.uploadImage);
-router.post("/multiple", upload.array("file",3),controller.uploadImage);
+router.post("/", passport.authenticate('bearer', { session: false }), upload.single("file"), controller.uploadImage);
+router.post("/multiple", passport.authenticate('bearer', { session: false }), upload.array("file", 3), controller.uploadImage);
 
 module.exports = router;
